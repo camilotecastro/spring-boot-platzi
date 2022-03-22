@@ -4,7 +4,9 @@ import com.camilo.springbootplatzi.bean.MyBean;
 import com.camilo.springbootplatzi.bean.MyBeanWithDependency;
 import com.camilo.springbootplatzi.component.ComponentDependency;
 import com.camilo.springbootplatzi.configuration.MyBeanWithProperties;
+import com.camilo.springbootplatzi.entity.User;
 import com.camilo.springbootplatzi.pojo.UserPojo;
+import com.camilo.springbootplatzi.repository.UserRepository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 
 @SpringBootApplication
 public class SpringBootPlatziApplication implements CommandLineRunner {
@@ -21,6 +27,7 @@ public class SpringBootPlatziApplication implements CommandLineRunner {
     private final MyBeanWithDependency myBeanWithDependency;
     private final MyBeanWithProperties myBeanWithProperties;
     private final UserPojo userPojo;
+    private final UserRepository userRepository;
 
     @Autowired
     public SpringBootPlatziApplication(
@@ -28,12 +35,13 @@ public class SpringBootPlatziApplication implements CommandLineRunner {
             MyBean myBean,
             MyBeanWithDependency myBeanWithDependency,
             MyBeanWithProperties myBeanWithProperties,
-            UserPojo userPojo) {
+            UserPojo userPojo, UserRepository userRepository) {
         this.componentDependency = componentDependency;
         this.myBean = myBean;
         this.myBeanWithDependency = myBeanWithDependency;
         this.myBeanWithProperties = myBeanWithProperties;
         this.userPojo = userPojo;
+        this.userRepository = userRepository;
     }
 
     public static void main(String[] args) {
@@ -42,6 +50,32 @@ public class SpringBootPlatziApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+       //ejemplosAnteriores();
+       saveUsersInDataBase();
+    }
+
+    public void saveUsersInDataBase(){
+        User user = new User("Jhon","jhon@gmail.com", LocalDate.of(2021,03,1));
+        User user1 = new User("Julie","jhon@gmail.com", LocalDate.of(2021,11,1));
+        User user2 = new User("Daniela","jhon@gmail.com", LocalDate.of(2021,12,2));
+        User user3 = new User("user3","jhon@gmail.com", LocalDate.of(2021,03,4));
+        User user4 = new User("user4","jhon@gmail.com", LocalDate.of(2021,03,6));
+        User user5 = new User("user5","jhon@gmail.com", LocalDate.of(2021,04,11));
+        User user6 = new User("user6","jhon@gmail.com", LocalDate.of(2021,04,30));
+        User user7 = new User("user7","jhon@gmail.com", LocalDate.of(2021,05,11));
+        User user8 = new User("user8","jhon@gmail.com", LocalDate.of(2021,03,21));
+        User user9 = new User("user9","jhon@gmail.com", LocalDate.of(2021,05,23));
+        User user10 = new User("user10","jhon@gmail.com", LocalDate.of(2021,06,24));
+        User user11 = new User("user11","jhon@gmail.com", LocalDate.of(2021,06,24));
+        User user12 = new User("user12","jhon@gmail.com", LocalDate.of(2021,07,11));
+
+        List<User> users = Arrays.asList(
+                user,user1,user2,user3,user4,user5,user6,user7,user8,user9,user10,user11,user12
+        );
+        users.forEach(userRepository::save);
+    }
+
+    public void ejemplosAnteriores(){
         componentDependency.saludar();
         myBean.print();
         myBeanWithDependency.printWithDepedency();
