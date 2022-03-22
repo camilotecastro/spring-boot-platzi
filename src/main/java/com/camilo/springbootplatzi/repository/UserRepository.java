@@ -22,4 +22,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // y los ordena de la manera en que yo quiera ya sea de forma descendente o ascendente
     @Query("select u from User u where u.name like ?1%")
     List<User> findAndSort(String userName, Sort sort);
+
+    //Query methods
+    List<User> findByNameAndEmail(String userName, String userEmail);
+    List<User> findByName(String userName);
+
 }

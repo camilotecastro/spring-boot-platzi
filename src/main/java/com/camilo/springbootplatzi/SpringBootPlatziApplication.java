@@ -57,16 +57,21 @@ public class SpringBootPlatziApplication implements CommandLineRunner {
     }
 
     public void getInformationJpqlFromUser(){
-        String email = "jhon1@gmail.com";
-        String name = "user";
+        String email = "Daniela@gmail.com";
+        String name = "Daniela";
         // Mostramos la información con un log
         LOGGER.info("Usuario con el metodo findByUserEmail: " +
                 userRepository
                         .findByUserEmail(email)
-                        .orElseThrow(()-> new RuntimeException("No se encontro ningun usuario con el email: " + email)));
+                        .orElseThrow(()->
+                                new RuntimeException("No se encontro ningun usuario con el email: " + email)));
         userRepository
                 .findAndSort(name, Sort.by("id")
                 .descending())
+                .forEach(LOGGER::info);
+        userRepository.findByNameAndEmail(name,email)
+                .forEach(LOGGER::info);
+        userRepository.findByName(name)
                 .forEach(LOGGER::info);
     }
 
@@ -74,6 +79,7 @@ public class SpringBootPlatziApplication implements CommandLineRunner {
         User user = new User("Jhon","jhon1@gmail.com", LocalDate.of(2021,03,1));
         User user1 = new User("Julie","Julie@gmail.com", LocalDate.of(2021,11,1));
         User user2 = new User("Daniela","Daniela@gmail.com", LocalDate.of(2021,12,2));
+        User user14 = new User("Daniela","Daniela14@gmail.com", LocalDate.of(2021,12,2));
         User user3 = new User("user3","user3@gmail.com", LocalDate.of(2021,03,4));
         User user4 = new User("user4","user4@gmail.com", LocalDate.of(2021,03,6));
         User user5 = new User("user5","user5@gmail.com", LocalDate.of(2021,04,11));
@@ -86,9 +92,10 @@ public class SpringBootPlatziApplication implements CommandLineRunner {
         User user12 = new User("user12","user12@gmail.com", LocalDate.of(2021,07,11));
 
         List<User> users = Arrays.asList(
-                user,user1,user2,user3,user4,user5,user6,user7,user8,user9,user10,user11,user12
+                user,user1,user2,user3,user4,user5,user6,user7,user8,user9,user10,user11,user12, user14
         );
         users.forEach(userRepository::save);
+
     }
 
     public void ejemplosAnteriores(){
