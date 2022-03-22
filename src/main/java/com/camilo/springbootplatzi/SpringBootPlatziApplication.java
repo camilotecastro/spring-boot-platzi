@@ -7,6 +7,7 @@ import com.camilo.springbootplatzi.configuration.MyBeanWithProperties;
 import com.camilo.springbootplatzi.entity.User;
 import com.camilo.springbootplatzi.pojo.UserPojo;
 import com.camilo.springbootplatzi.repository.UserRepository;
+import com.camilo.springbootplatzi.service.UserService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ public class SpringBootPlatziApplication implements CommandLineRunner {
     private final MyBeanWithProperties myBeanWithProperties;
     private final UserPojo userPojo;
     private final UserRepository userRepository;
+    private final UserService userService;
 
     @Autowired
     public SpringBootPlatziApplication(
@@ -36,13 +38,15 @@ public class SpringBootPlatziApplication implements CommandLineRunner {
             MyBean myBean,
             MyBeanWithDependency myBeanWithDependency,
             MyBeanWithProperties myBeanWithProperties,
-            UserPojo userPojo, UserRepository userRepository) {
+            UserPojo userPojo, UserRepository userRepository,
+            UserService userService) {
         this.componentDependency = componentDependency;
         this.myBean = myBean;
         this.myBeanWithDependency = myBeanWithDependency;
         this.myBeanWithProperties = myBeanWithProperties;
         this.userPojo = userPojo;
         this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     public static void main(String[] args) {
@@ -52,8 +56,21 @@ public class SpringBootPlatziApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
        //ejemplosAnteriores();
-       saveUsersInDataBase();
-       getInformationJpqlFromUser();
+       //saveUsersInDataBase();
+       //getInformationJpqlFromUser();
+        saveWithErrorTransactional();
+    }
+
+    private void saveWithErrorTransactional(){
+        User test1 = new User("test1", "test1@gmail.com",LocalDate.of(1997,1,6));
+        User test2 = new User("test2", "test2@gmail.com",LocalDate.of(1997,1,6));
+        User test3 = new User("test3", "test3@gmail.com",LocalDate.of(1997,1,6));
+        List<User> users = Arrays.asList(test1,test2,test3);
+        userService.saveTransactional(users);
+        userService
+                .getAllUsers()
+                .stream()
+                .forEach(System.out::println);
     }
 
     public void getInformationJpqlFromUser(){
@@ -78,7 +95,7 @@ public class SpringBootPlatziApplication implements CommandLineRunner {
         userRepository.findByName(name)
                 .forEach(LOGGER::info);
 
-        LOGGER.info("El usuario apartir del named parameter es: " +
+        LOGGER.info("El usuarioDTO apartir del named parameter es: " +
                 userRepository.getAllByBirthDateAndEmail
                                 (LocalDate.of(2021,03,1),"jhon1@gmail.com")
                 .orElseThrow(()->
