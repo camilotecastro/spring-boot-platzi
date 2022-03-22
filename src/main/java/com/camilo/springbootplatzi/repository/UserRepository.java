@@ -34,7 +34,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT new com.camilo.springbootplatzi.dto.UserDto(u.id, u.name, u.birthDate)" +
             "FROM User u " +
             "WHERE u.birthDate=:parametroFecha " +
-            "AND u.email=: parametroEmail")
+            "AND u.email=:parametroEmail")
     Optional<UserDto> getAllByBirthDateAndAndEmail(@Param("parametroFecha") LocalDate date,
                                                    @Param("parametroEmail") String email);
 
