@@ -57,22 +57,33 @@ public class SpringBootPlatziApplication implements CommandLineRunner {
     }
 
     public void getInformationJpqlFromUser(){
-        String email = "Daniela@gmail.com";
-        String name = "Daniela";
+        String email = "jhon1@gmail.com";
+        String name = "Jhon";
         // Mostramos la información con un log
         LOGGER.info("Usuario con el metodo findByUserEmail: " +
                 userRepository
                         .findByUserEmail(email)
                         .orElseThrow(()->
                                 new RuntimeException("No se encontro ningun usuario con el email: " + email)));
+
         userRepository
                 .findAndSort(name, Sort.by("id")
                 .descending())
                 .forEach(LOGGER::info);
-        userRepository.findByNameAndEmail(name,email)
-                .forEach(LOGGER::info);
+
+        userRepository
+                .findByNameAndEmail(name,email)
+                .orElseThrow(()->
+                        new RuntimeException("No se encontro el usuarion con el nombre: " + name+" y el email: " + email));
         userRepository.findByName(name)
                 .forEach(LOGGER::info);
+
+        LOGGER.info("El usuario apartir del named parameter es: " +
+                userRepository.getAllByBirthDateAndEmail
+                                (LocalDate.of(2021,03,1),"jhon1@gmail.com")
+                .orElseThrow(()->
+                        new RuntimeException("No se encontro el usuario apartir del named parameter")));
+
     }
 
     public void saveUsersInDataBase(){
