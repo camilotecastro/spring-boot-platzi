@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.domain.Sort;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -56,13 +57,17 @@ public class SpringBootPlatziApplication implements CommandLineRunner {
     }
 
     public void getInformationJpqlFromUser(){
-        String email = "nano@gmail.com";
+        String email = "jhon1@gmail.com";
+        String name = "user";
         // Mostramos la información con un log
         LOGGER.info("Usuario con el metodo findByUserEmail: " +
                 userRepository
                         .findByUserEmail(email)
-                        .orElseThrow(()->
-                                new RuntimeException("No se encontro ningun usuario con el email: " + email)));
+                        .orElseThrow(()-> new RuntimeException("No se encontro ningun usuario con el email: " + email)));
+        userRepository
+                .findAndSort(name, Sort.by("id")
+                .descending())
+                .forEach(LOGGER::info);
     }
 
     public void saveUsersInDataBase(){
