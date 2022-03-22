@@ -1,0 +1,38 @@
+server:
+  port: 8081
+  servlet:
+    context-path: /app
+
+key:
+  name: Camilo
+  lastName: Castro
+  random: ${random.value}
+
+user:
+  email: test@gmail.com
+  password: 12345
+  age: 24
+
+logging:
+  level:
+    root: info
+    org.springframework.web: info
+    org.hibernate: error
+
+spring:
+  datasource:
+    url: "jdbc:h2:mem:curso_platzi;DB_CLOSE_ON_EXIT=FALSE"
+    driver-class-name: org.h2.Driver
+    username: test
+    password: test
+    h2:
+      console:
+        enabled: true
+        path: /h2-console
+    jpa:
+      database-platform: org.hibernate.dialect.H2Dialect
+      defer-datasource-initialization: true
+      hibernate:
+        show-sql: true
+        format_sql: true
+        ddl-auto: create-drop
