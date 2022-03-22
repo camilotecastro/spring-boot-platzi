@@ -14,7 +14,7 @@ public class MyBeanWithDependencyImpl implements MyBeanWithDependency {
     }
 
     @Override
-    public void printWithDepedency() {
+    public void printWithDependency() {
         LOGGER.info("Entramos al metodo printWithDependency");
         int num = 1;
         System.out.println(myOperation.sum(num));
