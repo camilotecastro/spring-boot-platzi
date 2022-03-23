@@ -56,21 +56,25 @@ public class SpringBootPlatziApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
        //ejemplosAnteriores();
-       //saveUsersInDataBase();
+       saveUsersInDataBase();
        //getInformationJpqlFromUser();
-        saveWithErrorTransactional();
+        //saveWithErrorTransactional();
     }
 
     private void saveWithErrorTransactional(){
         User test1 = new User("test1", "test1@gmail.com",LocalDate.of(1997,1,6));
         User test2 = new User("test2", "test2@gmail.com",LocalDate.of(1997,1,6));
-        User test3 = new User("test3", "test3@gmail.com",LocalDate.of(1997,1,6));
+        User test3 = new User("test3", "test1@gmail.com",LocalDate.of(1997,1,6));
         List<User> users = Arrays.asList(test1,test2,test3);
-        userService.saveTransactional(users);
+        try {
+            userService.saveTransactional(users);
+        } catch (Exception e){
+            LOGGER.error("Exception dentro del metodo saveWithErrorTransactional");
+        }
         userService
                 .getAllUsers()
-                .stream()
-                .forEach(System.out::println);
+                .stream().forEach(System.out::println);
+
     }
 
     public void getInformationJpqlFromUser(){
