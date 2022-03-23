@@ -1,5 +1,7 @@
 package com.camilo.springbootplatzi.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 
 @Entity
@@ -10,6 +12,7 @@ public class Post {
     private Long id;
     private String description;
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "user_ID")
     private User user;
 
